@@ -71,3 +71,8 @@ if __name__ == "__main__":
 
     very_slow = orders[orders["delivery_days"] > 60]
     print("Orders delivered after more than 60 days:", len(very_slow))
+    
+
+    normal = orders[orders["delivery_days"] <= 60]
+    print("Average delivery time without orders over 60 days:", round(normal["delivery_days"].mean(), 1))
+    print("Median delivery time:", orders["delivery_days"].median())

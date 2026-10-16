@@ -37,3 +37,5 @@ Kaggle and put the files into the `data/` folder.
   in bulk. These orders are kept in the data.
 - Delivery time and the share of late deliveries are calculated only for
   orders with a delivery date. Orders without one are not counted as "on time".
+- Excluding orders over 60 days changes the mean delivery time only slightly
+  (12.1 to 11.9 days), the median stays at 10 days.
