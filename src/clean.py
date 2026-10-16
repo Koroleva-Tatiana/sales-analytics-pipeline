@@ -45,17 +45,21 @@ if __name__ == "__main__":
 
     logging.basicConfig(level=logging.INFO)
     orders = clean_orders(load_csv(Path("data/olist_orders_dataset.csv")))
+
     print(orders.dtypes)
     print(orders["delivery_days"].describe())
     print(orders[orders["order_delivered_customer_date"].isna()]["order_status"].value_counts())
-    print(orders["is_late"].mean())
+    print(f"Share of late delivaries: {orders['is_late'].mean():.1%}")
 
     delivered = orders[orders["order_status"] == "delivered"]
-    print(len(delivered))
-    print(delivered["order_delivered_customer_date"].isna().sum())
+    print( "Orders with status 'delivered':" , len(delivered))
+    print("'delivered' orders without delivery date:",
+          delivered["order_delivered_customer_date"].isna().sum())
 
     missing = delivered[delivered["order_delivered_customer_date"].isna()]
+    print("\nThese orders (delivered, but no delivery date):")
     print(missing[["order_id", "order_purchase_timestamp", "order_delivered_carrier_date"]])
 
     with_date = orders[orders["order_delivered_customer_date"].notna()]
+    print("\nStatuses of orders that DO have a delivery date:")
     print(with_date["order_status"].value_counts())
