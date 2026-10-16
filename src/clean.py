@@ -49,7 +49,7 @@ if __name__ == "__main__":
     print(orders.dtypes)
     print(orders["delivery_days"].describe())
     print(orders[orders["order_delivered_customer_date"].isna()]["order_status"].value_counts())
-    print(f"Share of late delivaries: {orders['is_late'].mean():.1%}")
+    print(f"Share of late deliveries: {orders['is_late'].mean():.1%}")
 
     delivered = orders[orders["order_status"] == "delivered"]
     print( "Orders with status 'delivered':" , len(delivered))
@@ -63,3 +63,11 @@ if __name__ == "__main__":
     with_date = orders[orders["order_delivered_customer_date"].notna()]
     print("\nStatuses of orders that DO have a delivery date:")
     print(with_date["order_status"].value_counts())
+
+    slowest = orders.sort_values("delivery_days", ascending=False)
+    print( "Slowest deliveries:" )
+    print(slowest[["order_id", "order_purchase_timestamp", "order_delivered_customer_date","order_estimated_delivery_date", "delivery_days"]].head(5).to_string())
+
+
+    very_slow = orders[orders["delivery_days"] > 60]
+    print("Orders delivered after more than 60 days:", len(very_slow))
