@@ -1,12 +1,10 @@
 
-- 8 orders have the status `delivered` but no delivery date. Seven of them have a\
-  carrier handover date, one has neither. They are excluded from the delivery\
-  time calculation.\
-- 6 `canceled` orders have a delivery date. They are kept in the data, and the\
-  reason is unknown.\
-- Delivery time and the share of late deliveries are calculated only for orders\
+## Data quality notes
+
+- 8 orders have the status `delivered` but no delivery date. Seven of them have a
+  carrier handover date, one has neither. They are excluded from the delivery
+  time calculation.
+- 6 `canceled` orders have a delivery date. They are kept in the data, and the
+  reason is unknown.
+- Delivery time and the share of late deliveries are calculated only for orders
   with a delivery date. Orders without one are not counted as "on time".
-  
-  - 288 delivered orders (about 0.3%) took more than 60 days. Several of the
-  slowest ones have the same delivery date (19 Sep 2017), so the date may have
-  been entered in bulk. These orders are kept in the data.
