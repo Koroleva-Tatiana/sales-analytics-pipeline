@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def load_csv(path: Path) -> pd.DataFrame:
     """Read a CSV file into a DataFrame."""
-    if not path.exists():
+    if not path.is_file():
         raise FileNotFoundError(f"File not found: {path}")
     df = pd.read_csv(path)
     logger.info("Loaded %s: %d rows, %d columns", path.name, *df.shape)

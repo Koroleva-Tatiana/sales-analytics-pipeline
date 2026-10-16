@@ -29,9 +29,10 @@ def clean_orders(df: pd.DataFrame) -> pd.DataFrame:
     ).dt.days
 
     # True if delivered later than estimated
-    df["is_late"] = (
-        df["order_delivered_customer_date"] > df["order_estimated_delivery_date"]
-    )
+    late = df["order_delivered_customer_date"] > df["order_estimated_delivery_date"]
+    df["is_late"] = late.astype("boolean").mask(
+        df["order_delivered_customer_date"].isna()
+)
 
     logger.info("Cleaned orders: %d rows", len(df))
     return df
@@ -47,3 +48,14 @@ if __name__ == "__main__":
     print(orders.dtypes)
     print(orders["delivery_days"].describe())
     print(orders[orders["order_delivered_customer_date"].isna()]["order_status"].value_counts())
+    print(orders["is_late"].mean())
+
+    delivered = orders[orders["order_status"] == "delivered"]
+    print(len(delivered))
+    print(delivered["order_delivered_customer_date"].isna().sum())
+
+    missing = delivered[delivered["order_delivered_customer_date"].isna()]
+    print(missing[["order_id", "order_purchase_timestamp", "order_delivered_carrier_date"]])
+
+    with_date = orders[orders["order_delivered_customer_date"].notna()]
+    print(with_date["order_status"].value_counts())
