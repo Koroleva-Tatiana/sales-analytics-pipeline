@@ -29,10 +29,30 @@ def quality_report(df: pd.DataFrame, name: str) -> dict:
     }
 
 
+##if __name__ == "__main__":
+    ##logging.basicConfig(level=logging.INFO)
+    ##orders = load_csv(Path("data/olist_orders_dataset.csv"))
+    ##print(quality_report(orders, "orders"))
+    ##print(orders.isna().sum())
+    ##print(orders.dtypes)
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    orders = load_csv(Path("data/olist_orders_dataset.csv"))
-    print(quality_report(orders, "orders"))
-    print(orders.isna().sum())
-    print(orders.dtypes)
 
+    files = {
+        "orders": "olist_orders_dataset.csv",
+        "order_items": "olist_order_items_dataset.csv",
+        "customers": "olist_customers_dataset.csv",
+        "products": "olist_products_dataset.csv",
+    }
+
+    for name, filename in files.items():
+        df = load_csv(Path("data") / filename)
+        print(quality_report(df, name))
+
+
+    products = load_csv(Path("data/olist_products_dataset.csv"))
+    no_category = products[products["product_category_name"].isna()]
+    print("Products without category:", len(no_category))
+    print("Of them, without photos count:", no_category["product_photos_qty"].isna().sum())
+    print(products["product_photos_qty"].describe())

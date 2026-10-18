@@ -38,6 +38,14 @@ def clean_orders(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def clean_products(df: pd.DataFrame) -> pd.DataFrame:
+    """Fill missing product categories with 'unknown'."""
+    df = df.copy()
+    df["product_category_name"] = df["product_category_name"].fillna("unknown")
+    logger.info("Cleaned products: %d rows", len(df))
+    return df
+
+
 if __name__ == "__main__":
     from pathlib import Path
 
@@ -71,8 +79,12 @@ if __name__ == "__main__":
 
     very_slow = orders[orders["delivery_days"] > 60]
     print("Orders delivered after more than 60 days:", len(very_slow))
-    
+
 
     normal = orders[orders["delivery_days"] <= 60]
     print("Average delivery time without orders over 60 days:", round(normal["delivery_days"].mean(), 1))
     print("Median delivery time:", orders["delivery_days"].median())
+
+
+    products = clean_products(load_csv(Path("data/olist_products_dataset.csv")))
+    print("Products with category 'unknown':", (products["product_category_name"] == "unknown").sum())
