@@ -46,3 +46,7 @@ Kaggle and put the files into the `data/` folder.
 - Two product categories (`pc_gamer`, `portateis_cozinha_e_preparadores_de_alimentos`)
   have no English translation in the Olist translation table. They are kept
   with their original Portuguese names (`LEFT JOIN` + `COALESCE`).
+
+## Report preview
+
+![Excel report](docs/report_preview.png)
