@@ -32,7 +32,20 @@ def create_report(conn: sqlite3.Connection, output_path: Path = REPORT_PATH) -> 
         months = Reference(sheet, min_col=1, min_row=2, max_row=len(monthly) + 1)
         chart.add_data(values, titles_from_data=True)
         chart.set_categories(months)
-        sheet.add_chart(chart, "E2")
+        sheet.add_chart(chart, "G2")
+                # column widths
+        sheet.column_dimensions["A"].width = 12
+        sheet.column_dimensions["B"].width = 10
+        sheet.column_dimensions["C"].width = 16
+        top = writer.sheets["Top categories"]
+        top.column_dimensions["A"].width = 28
+        top.column_dimensions["B"].width = 10
+        top.column_dimensions["C"].width = 16
+
+        # number format with thousands separator
+        for ws in (sheet, top):
+            for cell in ws["C"][1:]:
+                cell.number_format = "#,##0.00"
 
     logger.info("Report saved: %s", output_path)
 
