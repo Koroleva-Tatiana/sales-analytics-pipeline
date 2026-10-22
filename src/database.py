@@ -32,6 +32,7 @@ if __name__ == "__main__":
         "order_items": load_csv(Path("data/olist_order_items_dataset.csv")),
         "customers": load_csv(Path("data/olist_customers_dataset.csv")),
         "products": clean_products(load_csv(Path("data/olist_products_dataset.csv"))),
+        "category_translation": load_csv(Path("data/product_category_name_translation.csv")),
     }
 
     conn = sqlite3.connect(DB_PATH)

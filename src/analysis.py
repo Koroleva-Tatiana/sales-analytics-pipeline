@@ -25,17 +25,20 @@ ORDER BY month
 
 CATEGORY_REVENUE_SQL = """
 SELECT
-    p.product_category_name AS category,
+    COALESCE(t.product_category_name_english, p.product_category_name) AS category,
     COUNT(DISTINCT o.order_id) AS orders,
     ROUND(SUM(i.price), 2) AS revenue
 FROM orders AS o
 JOIN order_items AS i ON i.order_id = o.order_id
 JOIN products AS p ON p.product_id = i.product_id
+LEFT JOIN category_translation AS t
+    ON t.product_category_name = p.product_category_name
 WHERE o.order_status = 'delivered'
 GROUP BY category
 ORDER BY revenue DESC
 LIMIT 10
 """
+
 
 
 def run_query(sql: str, conn: sqlite3.Connection) -> pd.DataFrame:
@@ -91,5 +94,17 @@ if __name__ == "__main__":
     print(f"Revenue of 'unknown' category: {unknown:,.2f}")
     print(f"Share of 'unknown': {unknown / total:.1%}")
 
+    
+    
+    
+    no_translation_sql = """
+    SELECT DISTINCT p.product_category_name AS category
+    FROM products AS p
+    LEFT JOIN category_translation AS t
+        ON t.product_category_name = p.product_category_name
+    WHERE t.product_category_name IS NULL
+    """
+    print("\nCategories without translation:")
+    print(run_query(no_translation_sql, conn).to_string(index=False))
 
     conn.close()

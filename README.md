@@ -43,3 +43,6 @@ Kaggle and put the files into the `data/` folder.
   account for about 1.3% of revenue from delivered orders, so the category
   analysis is not much affected.
 - Revenue is the sum of item prices of delivered orders. The data for 2016 is incomplete, and the dataset ends in August 2018.
+- Two product categories (`pc_gamer`, `portateis_cozinha_e_preparadores_de_alimentos`)
+  have no English translation in the Olist translation table. They are kept
+  with their original Portuguese names (`LEFT JOIN` + `COALESCE`).
