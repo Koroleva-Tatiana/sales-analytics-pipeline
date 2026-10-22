@@ -23,6 +23,21 @@ ORDER BY month
 """
 
 
+CATEGORY_REVENUE_SQL = """
+SELECT
+    p.product_category_name AS category,
+    COUNT(DISTINCT o.order_id) AS orders,
+    ROUND(SUM(i.price), 2) AS revenue
+FROM orders AS o
+JOIN order_items AS i ON i.order_id = o.order_id
+JOIN products AS p ON p.product_id = i.product_id
+WHERE o.order_status = 'delivered'
+GROUP BY category
+ORDER BY revenue DESC
+LIMIT 10
+"""
+
+
 def run_query(sql: str, conn: sqlite3.Connection) -> pd.DataFrame:
     """Run an SQL query and return the result as a DataFrame."""
     return pd.read_sql_query(sql, conn)
@@ -34,4 +49,23 @@ if __name__ == "__main__":
     conn = sqlite3.connect(DB_PATH)
     monthly = run_query(MONTHLY_REVENUE_SQL, conn)
     print(monthly.to_string(index=False))
+
+    print("\nTop 10 categories by revenue:")
+    categories = run_query(CATEGORY_REVENUE_SQL, conn)
+    print(categories.to_string(index=False))
+
+
+    unknown_sql = """
+    SELECT
+        COUNT(DISTINCT o.order_id) AS orders,
+        ROUND(SUM(i.price), 2) AS revenue
+    FROM orders AS o
+    JOIN order_items AS i ON i.order_id = o.order_id
+    JOIN products AS p ON p.product_id = i.product_id
+    WHERE o.order_status = 'delivered'
+      AND p.product_category_name = 'unknown'
+    """
+    print("\nCategory 'unknown':")
+    print(run_query(unknown_sql, conn).to_string(index=False))
+
     conn.close()
