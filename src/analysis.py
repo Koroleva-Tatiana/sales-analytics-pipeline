@@ -68,4 +68,28 @@ if __name__ == "__main__":
     print("\nCategory 'unknown':")
     print(run_query(unknown_sql, conn).to_string(index=False))
 
+
+
+    total_sql = """
+    SELECT ROUND(SUM(i.price), 2)
+    FROM orders AS o
+    JOIN order_items AS i ON i.order_id = o.order_id
+    WHERE o.order_status = 'delivered'
+    """
+    unknown_sql_total = """
+    SELECT ROUND(SUM(i.price), 2)
+    FROM orders AS o
+    JOIN order_items AS i ON i.order_id = o.order_id
+    JOIN products AS p ON p.product_id = i.product_id
+    WHERE o.order_status = 'delivered'
+      AND p.product_category_name = 'unknown'
+    """
+    total = conn.execute(total_sql).fetchone()[0]
+    unknown = conn.execute(unknown_sql_total).fetchone()[0]
+
+    print(f"\nTotal revenue: {total:,.2f}")
+    print(f"Revenue of 'unknown' category: {unknown:,.2f}")
+    print(f"Share of 'unknown': {unknown / total:.1%}")
+
+
     conn.close()

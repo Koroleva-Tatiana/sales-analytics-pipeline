@@ -39,3 +39,7 @@ Kaggle and put the files into the `data/` folder.
   orders with a delivery date. Orders without one are not counted as "on time".
 - Excluding orders over 60 days changes the mean delivery time only slightly
   (12.1 to 11.9 days), the median stays at 10 days.
+- 610 products have no category. They were labeled `unknown`. These products
+  account for about 1.3% of revenue from delivered orders, so the category
+  analysis is not much affected.
+- Revenue is the sum of item prices of delivered orders. The data for 2016 is incomplete, and the dataset ends in August 2018.
