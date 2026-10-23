@@ -53,8 +53,7 @@ Kaggle and put the files into the `data/` folder.
 
 ## Quick start with the sample data
 
-The repository contains a small sample (200 orders) in `data/sample/`, so the
-pipeline can be run without downloading the full dataset:
+The repository contains a small sample (200 orders) in `data/sample/`, so the pipeline can be run without downloading the full dataset:
 
     python main.py --data-dir data/sample --db data/sample.db --output output/sample_report.xlsx
 
