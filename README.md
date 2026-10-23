@@ -50,3 +50,19 @@ Kaggle and put the files into the `data/` folder.
 ## Report preview
 
 ![Excel report](docs/report_preview.png)
+
+## Quick start with the sample data
+
+The repository contains a small sample (200 orders) in `data/sample/`, so the
+pipeline can be run without downloading the full dataset:
+
+    python main.py --data-dir data/sample --db data/sample.db --output output/sample_report.xlsx
+
+To run it on the full dataset, download it from Kaggle, put the CSV files into
+`data/` and run `python main.py`.
+
+## Data source
+
+Olist Brazilian E-Commerce Public Dataset (Kaggle). The files in `data/sample/`
+are a random subset of it (created with `src/make_sample.py`). Please check the
+license on the Kaggle page before reusing the data.
